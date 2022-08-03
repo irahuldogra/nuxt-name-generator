@@ -1,21 +1,13 @@
-# Nuxt 3 Name Generator
 
-Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
+# nuxt-name-generator
 
-## Setup
+The application is to generator names based on selected options
 
-Make sure to install the dependencies:
 
-```bash
-# yarn
-yarn install
+## Tech Stack
 
-# npm
-npm install
+**Client:** typescript, vue, nuxt, tailwindcss
 
-# pnpm
-pnpm install --shamefully-hoist
-```
 
 ## Development Server
 
@@ -39,4 +31,12 @@ Locally preview production build:
 npm run preview
 ```
 
-Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
+## Demo Website 
+
+ - [nuxt-name-generator](https://nuxt-name-generator.netlify.app/)
+
+
+## Authors
+
+- [@irahuldogra](https://www.github.com/irahuldogra)
+
