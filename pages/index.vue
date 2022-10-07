@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { Gender, Popularity, Length, names } from '@/data';
-
-interface OptionsInterface {
-  gender: Gender;
-  popularity: Popularity;
-  length: Length;
-}
+import {
+  OptionsInterface,
+  Section,
+  Gender,
+  Popularity,
+  Length,
+  names,
+} from '@/data';
 
 const options = reactive<OptionsInterface>({
   gender: Gender.BOY,
@@ -26,6 +27,30 @@ const computeSelectedNames = () => {
 };
 
 const selectedNames = ref<string[]>([]);
+
+const removeName = (index: number) => {
+  const filteredNames = [...selectedNames.value];
+  filteredNames.splice(index, 1);
+  selectedNames.value = filteredNames;
+};
+
+const sectionsData: Section[] = [
+  {
+    title: '1) Choose a gender',
+    category: 'gender',
+    buttons: [Gender.BOY, Gender.UNISEX, Gender.GIRL],
+  },
+  {
+    title: "2) Choose the name's popularity",
+    category: 'popularity',
+    buttons: [Popularity.TRENDY, Popularity.UNIQUE],
+  },
+  {
+    title: "3) Choose name's length",
+    category: 'length',
+    buttons: [Length.SHORT, Length.ALL, Length.LONG],
+  },
+];
 </script>
 
 <template>
@@ -37,103 +62,12 @@ const selectedNames = ref<string[]>([]);
     <div
       class="relative p-3 mx-2 md:mx-auto bg-gradient-to-r from-indigo-100 to-purple-300 rounded-3xl"
     >
-      <div class="container mx-auto md:my-2">
-        <h4 class="p-2 font-semibold text-md">1) Choose a gender</h4>
-        <div class="mb-2 text-sm font-medium text-white">
-          <button
-            class="bg-purple-700 hover:bg-purple-800 px-10 md:px-20 py-2.5 rounded-l-lg"
-            :class="
-              options.gender === Gender.BOY &&
-              'outline-none ring-4 ring-purple-300 bg-purple-600 mr-1'
-            "
-            @click="options.gender = Gender.BOY"
-          >
-            Boy
-          </button>
-          <button
-            class="bg-purple-700 hover:bg-purple-800 px-10 md:px-20 py-2.5"
-            :class="
-              options.gender === Gender.UNISEX &&
-              'outline-none ring-4 ring-purple-300 bg-purple-600 mr-1'
-            "
-            @click="options.gender = Gender.UNISEX"
-          >
-            Unisex
-          </button>
-          <button
-            class="bg-purple-700 hover:bg-purple-800 px-10 md:px-20 py-2.5 rounded-r-lg"
-            :class="
-              options.gender === Gender.GIRL &&
-              'outline-none ring-4 ring-purple-300 bg-purple-600 mr-1'
-            "
-            @click="options.gender = Gender.GIRL"
-          >
-            Girl
-          </button>
-        </div>
-      </div>
-      <div class="container mx-auto md:my-2">
-        <h4 class="p-2 font-semibold text-md">
-          2) Choose the name's popularity
-        </h4>
-        <div class="mb-2 text-sm font-medium text-white">
-          <button
-            class="bg-purple-700 hover:bg-purple-800 px-10 md:px-20 py-2.5 rounded-l-lg"
-            :class="
-              options.popularity === Popularity.TRENDY &&
-              'outline-none ring-4 ring-purple-300 bg-purple-600 mr-1'
-            "
-            @click="options.popularity = Popularity.TRENDY"
-          >
-            Trendy
-          </button>
-          <button
-            class="bg-purple-700 hover:bg-purple-800 px-10 md:px-20 py-2.5 rounded-r-lg"
-            :class="
-              options.popularity === Popularity.UNIQUE &&
-              'outline-none ring-4 ring-purple-300 bg-purple-600 mr-1'
-            "
-            @click="options.popularity = Popularity.UNIQUE"
-          >
-            Unique
-          </button>
-        </div>
-      </div>
-      <div class="container mx-auto md:my-2">
-        <h4 class="p-2 font-semibold text-md">3) Choose name's length</h4>
-        <div class="mb-2 text-sm font-medium text-white">
-          <button
-            class="bg-purple-700 hover:bg-purple-800 px-10 md:px-20 py-2.5 rounded-l-lg"
-            :class="
-              options.length === Length.LONG &&
-              'outline-none ring-4 ring-purple-300 bg-purple-600 mr-1'
-            "
-            @click="options.length = Length.LONG"
-          >
-            Long
-          </button>
-          <button
-            class="bg-purple-700 hover:bg-purple-800 px-10 md:px-20 py-2.5"
-            :class="
-              options.length === Length.ALL &&
-              'outline-none ring-4 ring-purple-300 bg-purple-600 mr-1'
-            "
-            @click="options.length = Length.ALL"
-          >
-            All
-          </button>
-          <button
-            class="bg-purple-700 hover:bg-purple-800 px-10 md:px-20 py-2.5 rounded-r-lg"
-            :class="
-              options.length === Length.SHORT &&
-              'outline-none ring-4 ring-purple-300 bg-purple-600 mr-1'
-            "
-            @click="options.length = Length.SHORT"
-          >
-            Short
-          </button>
-        </div>
-      </div>
+      <Option
+        v-for="section in sectionsData"
+        :key="section.title"
+        :section="section"
+        :options="options"
+      />
       <button
         class="text-white hover:bg-purple-800 font-medium text-sm px-10 md:px-20 py-2.5 mb-2 mt-4 outline-none bg-purple-600 rounded-2xl focus:bg-purple-700 focus:ring-4 focus:ring-purple-300"
         @click="computeSelectedNames"
@@ -142,18 +76,13 @@ const selectedNames = ref<string[]>([]);
       </button>
     </div>
     <div class="flex flex-wrap mt-4 text-white justify-evenly">
-      <div
-        class="relative w-[32%] mb-4 mx-1 bg-purple-400 rounded-2xl p-1 py-8"
-        v-for="name in selectedNames"
+      <CardName
+        v-for="(name, index) in selectedNames"
         :key="name"
-      >
-        <h4 class="font-medium text-md">{{ name }}</h4>
-        <p
-          class="absolute text-purple-800 font-bold top-[5%] left-[91%] cursor-pointer"
-        >
-          X
-        </p>
-      </div>
+        :name="name"
+        :index="index"
+        @remove="() => removeName(index)"
+      />
     </div>
   </div>
 </template>

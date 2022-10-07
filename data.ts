@@ -1,9 +1,22 @@
+type Title = string;
 interface Name {
   id: number;
   name: string;
   gender: Gender;
   popularity: Popularity;
   length: Length;
+}
+
+export interface OptionsInterface {
+  gender: Gender;
+  popularity: Popularity;
+  length: Length;
+}
+
+export interface Section {
+  title: Title;
+  category: string;
+  buttons: string[];
 }
 
 export enum Gender {
@@ -22,6 +35,7 @@ export enum Length {
   LONG = 'Long',
   ALL = 'All',
 }
+
 export const names: Name[] = [
   {
     id: 1,

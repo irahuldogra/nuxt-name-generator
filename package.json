@@ -1,4 +1,12 @@
 {
+  "name": "name-generator",
+  "keywords": [
+    "nuxt",
+    "typescript",
+    "tailwindcss",
+    "vue3"
+  ],
+  "author": "Rahul Dogra",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -9,5 +17,9 @@
   "devDependencies": {
     "nuxt": "rc",
     "tailwindcss": "^3.1.6"
+  },
+  "engines": {
+    "npm": ">=8.0.0 <8.19.2",
+    "node": ">=16.0.0 <18.10.0"
   }
 }
